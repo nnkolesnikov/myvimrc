@@ -1,0 +1,158 @@
+set nocompatible              
+
+
+"=====================================================
+"	Vundle 
+"=====================================================
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'      " let Vundle manage Vundle, required
+"---------=== Code/project navigation ===-------------
+Plugin 'majutsushi/tagbar'          	" Class/module browser
+Plugin 'scrooloose/nerdtree'
+
+"---------=== HTML CSS ===-------------
+Plugin 'mattn/emmet-vim'
+Plugin 'alvan/vim-closetag'
+"------------------=== Other ===----------------------
+Plugin 'bling/vim-airline'      " Lean & mean status/tobline for vim
+"---------------=== Languages support ===-------------
+Plugin 'davidhalter/jedi-vim'   " Jedi-vim autocomplete plugin
+"--JavaScript
+"Plugin 'vim-syntastic/syntastic' 
+Plugin 'dense-analysis/ale'
+Plugin 'pangloss/vim-javascript' 
+Plugin 'mxw/vim-jsx'
+Plugin 'ycm-core/YouCompleteMe'
+call vundle#end()             	" required
+filetype on              
+filetype plugin on       
+filetype plugin indent on
+                         
+                         
+"======================= ==============================
+"	General Settings	
+"=====================================================
+
+map <F2> :NERDTreeToggle<CR>
+
+" Html, css, js support
+au FileType html,xhtml setl ofu=htmlcomplete#CompleteTags
+au FileType css setl ofu=csscomplete#CompleteCSS
+au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+" Automatic reloading of .vimrc
+autocmd! bufwritepost .vimrcjs source %
+
+
+" Mouse and backspace
+set mouse=a
+set bs=2
+
+
+" Rebind <Leader> key
+let mapleader = ","
+
+
+" Quick quit command
+noremap <Leader>e :quit<CR>  " Quit current window
+noremap <Leader>E :qa!<CR>   " Quit all windows
+
+
+" bind Ctrl+<movement> keys to move around the windows, instead of using Ctrl+w + <movement>
+" Every unnecessary keystroke that can be saved is good for your health :)
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+map <c-h> <c-w>h
+
+
+" Bind nohl
+" Removes highlight of your last search
+" ``<C>`` stands for ``CTRL`` and therefore ``<C-n>`` stands for ``CTRL+n``
+noremap <C-c> :nohl<CR>
+vnoremap <C-c> :nohl<CR>
+inoremap <C-c> :nohl<CR>
+
+
+" easier moving between tabs
+map <Leader>a <esc>:tabprevious<CR>
+map <Leader>d <esc>:tabnext<CR>
+
+
+" map sort function to a key
+vnoremap <Leader>s :sort<CR>
+
+
+" easier moving of code blocks
+" Try to go into visual mode (v), thenselect several lines of code here and
+" then press ``>`` several times.
+vnoremap < <gv  " better indentation
+vnoremap > >gv  " better indentation
+
+
+" Show whitespace
+" MUST be inserted BEFORE the colorscheme command
+" autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+" au InsertLeave * match ExtraWhitespace /\s\+$/
+
+" Color scheme
+set t_Co=256
+colorscheme onedark 
+
+
+" Enable syntax highlighting
+syntax on
+
+
+" Showing line numbers and length
+set number  " show line numbers
+set nowrap  " don't automatically wrap on load
+set fo-=t   " don't automatically wrap text when typing
+
+
+" Real programmers don't use TABs but spaces
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set shiftround
+set expandtab
+
+
+" Make search case insensitive
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+
+" Disable stupid backup and swap files - they trigger too many events
+" for file system watchers
+set nobackup
+set nowritebackup
+set noswapfile
+
+
+" Quick start tagbar
+nmap <F8> :TagbarToggle<CR>
+
+"=====================================================
+"   Emmet	
+"=====================================================
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+
+let g:user_emmet_leader_key='<c-a>'
+
+"======================= ==============================
+"	General Syntastic 
+"=====================================================
+"    set statusline+=%#warningmsg#
+"    set statusline+=%{SyntasticStatuslineFlag()}
+"    set statusline+=%*
+"    let g:syntastic_always_populate_loc_list = 1
+"    let g:syntastic_auto_loc_list = 1
+"    let g:syntastic_check_on_open = 1
+"    let g:syntastic_check_on_wq = 0
+"    let g:syntastic_javascript_checkers = ['eslint']
+"    let g:syntastic_javascript_eslint_exe = 'npm run lint --'
