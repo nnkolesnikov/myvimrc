@@ -1,0 +1,173 @@
+set nocompatible              
+
+
+"=====================================================
+"	Vundle 
+"=====================================================
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'      " let Vundle manage Vundle, required
+"---------=== Code/project navigation ===-------------
+Plugin 'majutsushi/tagbar'          	" Class/module browser
+"------------------=== Other ===----------------------
+Plugin 'bling/vim-airline'      " Lean & mean status/tobline for vim
+"---------------=== Languages support ===-------------
+" --- Python ---
+Plugin 'klen/python-mode'
+"Plugin 'scrooloose/syntastic'
+Plugin 'davidhalter/jedi-vim'   " Jedi-vim autocomplete plugin
+call vundle#end()             	" required
+filetype on              
+filetype plugin on       
+filetype plugin indent on
+                         
+                         
+"======================= ==============================
+"	General Settings	
+"=====================================================
+
+
+" Automatic reloading of .vimrc
+autocmd! bufwritepost .vimrcpy source %
+
+" Rebind <Leader> key
+let mapleader = ","
+
+
+" Mouse and backspace
+set mouse=a
+set bs=2
+
+
+
+" Quick quit command
+noremap <Leader>e :quit<CR>  " Quit current window
+noremap <Leader>E :qa!<CR>   " Quit all windows
+
+
+" bind Ctrl+<movement> keys to move around the windows, instead of using Ctrl+w + <movement>
+" Every unnecessary keystroke that can be saved is good for your health :)
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+map <c-h> <c-w>h
+
+
+" Bind nohl
+" Removes highlight of your last search
+" ``<C>`` stands for ``CTRL`` and therefore ``<C-n>`` stands for ``CTRL+n``
+noremap <C-n> :nohl<CR>
+vnoremap <C-n> :nohl<CR>
+inoremap <C-n> :nohl<CR>
+
+
+" easier moving between tabs
+map <Leader>n <esc>:tabprevious<CR>
+map <Leader>m <esc>:tabnext<CR>
+
+
+" map sort function to a key
+vnoremap <Leader>s :sort<CR>
+
+
+" easier moving of code blocks
+" Try to go into visual mode (v), thenselect several lines of code here and
+" then press ``>`` several times.
+vnoremap < <gv  " better indentation
+vnoremap > >gv  " better indentation
+
+
+" Show whitespace
+" MUST be inserted BEFORE the colorscheme command
+" autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+" au InsertLeave * match ExtraWhitespace /\s\+$/
+
+" Color scheme
+set t_Co=256
+colorscheme onedark 
+
+
+" Enable syntax highlighting
+syntax on
+
+
+" Showing line numbers and length
+set number  " show line numbers
+set nowrap  " don't automatically wrap on load
+set fo-=t   " don't automatically wrap text when typing
+
+
+" Real programmers don't use TABs but spaces
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set shiftround
+set expandtab
+
+
+" Make search case insensitive
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+
+" Disable stupid backup and swap files - they trigger too many events
+" for file system watchers
+set nobackup
+set nowritebackup
+set noswapfile
+
+
+" Quick start tagbar
+nmap <F8> :TagbarToggle<CR>
+
+
+"=====================================================
+" Python-mode settings
+"=====================================================
+
+let g:pymode_python = 'python3'
+map <Leader>g :call RopeGotoDefinition()<CR>
+let g:pymode_lint = 1
+let g:pymode_lint_on_fly = 1
+let g:pymode_lint_message = 1
+let g:pymode_lint_error_symbol = '>>'
+let g:pymode_run_bind = '<F5>'
+let ropevim_enable_shortcuts = 1
+let g:pymode_rope_goto_def_newwin = "vnew"
+let g:pymode_rope_extended_complete = 1
+let g:pymode_breakpoint = 1 
+let g:pymode_syntax = 1
+let g:pymode_syntax_builtin_objs = 0
+let g:pymode_syntax_builtin_funcs = 0
+map <Leader>b Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
+ let g:syntastic_check_on_wq = 0
+ 
+
+"=====================================================
+"   jedi-vim settings
+"=====================================================
+
+let g:jedi#usages_command = "<leader>z"
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 0
+map <Leader>b Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
+
+" Better navigating through omnicomplete option list
+" See http://stackoverflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
+set completeopt=longest,menuone
+function! OmniPopup(action)
+    if pumvisible()
+        if a:action == 'j'
+            return "\<C-N>"
+        elseif a:action == 'k'
+            return "\<C-P>"
+        endif
+    endif
+    return a:action
+endfunction
+
+inoremap <silent><C-j> <C-R>=OmniPopup('j')<CR>
+inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
